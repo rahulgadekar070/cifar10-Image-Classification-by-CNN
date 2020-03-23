@@ -66,7 +66,7 @@ plt.tight_layout()
 plt.show()
 
 
-"""# **Model Building**
+""" **Model Building**
 **Model-1 with Sequential()...**
 """
 model1 = tf.keras.Sequential()
@@ -154,6 +154,8 @@ plt.ylabel('model_acuracy')
 plt.xlabel('epochs')
 plt.legend(loc = 'upper left')
 
+# we also try Batch Normalization deep neural network method,Becaause it reduces covariant shift,
+# also it makes the input to each layer have zero mean, so it gives better test performance.
 
 """**Model-2 with BatchNormalization**"""
 i = Input(shape=x_train[0].shape)   #shape 0f i/p layer
@@ -336,7 +338,8 @@ plt.imshow(x_test[i], cmap='gray')
 plt.title("True label: %s Predicted: %s" % (labels[y_test[i]], labels[p_test[i]]))
 # Text(0.5, 1.0, 'True label: dog, Predicted: cat,')
 
-
+# In Batch Normalization we see that it gives better training accuracy but lower test accuracy so it leads the overfitting
+# problem so to avoid this we use Data Augmentation on this Batch Normalization model by retraining.
 """**Retrain data with Augmentation** on Batch_Normalization Model"""
 batch_size = 32
 data_generator = tf.keras.preprocessing.image.ImageDataGenerator(width_shift_range=0.1,
