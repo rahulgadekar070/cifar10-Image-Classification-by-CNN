@@ -28,6 +28,7 @@ cfr10 = tf.keras.datasets.cifar10
 
 """Check the shape of data..."""
 print(x_train.shape,y_train.shape,x_test.shape,y_test.shape)
+# (50000, 32, 32, 3) (50000, 1) (10000, 32, 32, 3) (10000, 1)
 
 
 """**Pre-processing**"""
@@ -89,6 +90,39 @@ model1.add(Dense(classes, activation='softmax'))
 """Compile the Model"""
 model1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model1.summary()
+# Model: "sequential"
+_________________________________________________________________
+#Layer (type)                 Output Shape              Param    
+=================================================================
+#conv2d (Conv2D)              (None, 32, 32, 32)        896       
+_________________________________________________________________
+#conv2d_1 (Conv2D)            (None, 32, 32, 32)        9248      
+_________________________________________________________________
+#max_pooling2d (MaxPooling2D) (None, 16, 16, 32)        0         
+_________________________________________________________________
+#dropout (Dropout)            (None, 16, 16, 32)        0         
+_________________________________________________________________
+#conv2d_2 (Conv2D)            (None, 16, 16, 64)        18496     
+_________________________________________________________________
+#conv2d_3 (Conv2D)            (None, 16, 16, 64)        36928     
+_________________________________________________________________
+#max_pooling2d_1 (MaxPooling2 (None, 8, 8, 64)          0         
+_________________________________________________________________
+#dropout_1 (Dropout)          (None, 8, 8, 64)          0         
+_________________________________________________________________
+#flatten (Flatten)            (None, 4096)              0         
+_________________________________________________________________
+#dense (Dense)                (None, 512)               2097664   
+_________________________________________________________________
+#dropout_2 (Dropout)          (None, 512)               0         
+_________________________________________________________________
+#dense_1 (Dense)              (None, 10)                5130      
+=================================================================
+#Total params: 2,168,362
+#Trainable params: 2,168,362
+#Non-trainable params: 0
+__________________________
+##########################################################################################
 
 
 """Fit the Model"""
@@ -100,6 +134,9 @@ hist1 = model1.fit(x_train,y_train, batch_size=32, epochs=15 , validation_data=(
 score = model1.evaluate(x_test, y_test)
 print('Test loss:', score[0])
 print('Test Accuracy:', score[1])
+# Test loss: 0.6776633263587951
+# Test Accuracy: 0.7793
+
 
 """Loss Plot..."""
 # Plot Loss per iteration...
@@ -151,6 +188,56 @@ model2 = Model(i, x)
 """Compile the Model"""
 model2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model2.summary()
+# Model: "model"
+_________________________________________________________________
+#Layer (type)                 Output Shape              Param #   
+=================================================================
+#input_1 (InputLayer)         [(None, 32, 32, 3)]       0         
+_________________________________________________________________
+#conv2d_4 (Conv2D)            (None, 32, 32, 32)        896       
+_________________________________________________________________
+#batch_normalization (BatchNo (None, 32, 32, 32)        128       
+_________________________________________________________________
+#conv2d_5 (Conv2D)            (None, 32, 32, 32)        9248      
+_________________________________________________________________
+#batch_normalization_1 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+#max_pooling2d_2 (MaxPooling2 (None, 16, 16, 32)        0         
+_________________________________________________________________
+#conv2d_6 (Conv2D)            (None, 16, 16, 64)        18496     
+_________________________________________________________________
+#batch_normalization_2 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+#conv2d_7 (Conv2D)            (None, 16, 16, 64)        36928     
+_________________________________________________________________
+#batch_normalization_3 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+#max_pooling2d_3 (MaxPooling2 (None, 8, 8, 64)          0         
+_________________________________________________________________
+#conv2d_8 (Conv2D)            (None, 8, 8, 128)         73856     
+_________________________________________________________________
+#batch_normalization_4 (Batch (None, 8, 8, 128)         512       
+_________________________________________________________________
+#conv2d_9 (Conv2D)            (None, 8, 8, 128)         147584    
+_________________________________________________________________
+#batch_normalization_5 (Batch (None, 8, 8, 128)         512
+#max_pooling2d_4 (MaxPooling2 (None, 4, 4, 128)         0         
+_________________________________________________________________
+#flatten_1 (Flatten)          (None, 2048)              0         
+_________________________________________________________________
+#dropout_3 (Dropout)          (None, 2048)              0         
+_________________________________________________________________
+#dense_2 (Dense)              (None, 1024)              2098176   
+_________________________________________________________________
+#dropout_4 (Dropout)          (None, 1024)              0         
+_________________________________________________________________
+#dense_3 (Dense)              (None, 10)                10250     
+=================================================================
+#Total params: 2,397,226
+#Trainable params: 2,396,330
+#Non-trainable params: 896
+______________
+###############################################################################################
 
 """Training the model by fitting..."""
 fit = model2.fit(x_train,y_train, epochs=10, validation_data=(x_test,y_test))
@@ -159,6 +246,8 @@ fit = model2.fit(x_train,y_train, epochs=10, validation_data=(x_test,y_test))
 score = model2.evaluate(x_test, y_test)
 print('test loss:', score[0])
 print('Test Accuracy:', score[1])
+# test loss: 0.6898217641353607
+# Test Accuracy: 0.8133
 
 """Plot the Loss"""
 # Plot Loss per iteration...
@@ -216,6 +305,18 @@ def plot_confusion_matrix(cm, classes,
 p_test = model2.predict(x_test).argmax(axis=1)
 cm = confusion_matrix(y_test, p_test)
 plot_confusion_matrix(cm, list(range(10)))
+# Confusion matrix, without normalization
+# [[870   6  14  39   8   2   5   8  22  26]
+# [ 14 893   1   3   1   2   8   0  19  59]
+# [ 63   3 595 119  51  73  66  24   2   4]
+# [ 13   2  17 773  25  95  37  23   5  10]
+# [ 11   2  33  98 732  31  40  45   6   2]
+# [  7   1  14 202  20 725   7  20   1   3]
+# [  6   2  10  74  12  21 864   5   4   2]
+# [  4   1   4  55  22  26   2 870   2  14]
+# [ 46   6   3  11   1   1   5   5 901  21]
+# [ 18  39   3  11   0   2   3   4  10 910]]
+#########################################################################################
 
 """**Define the Labels**"""
 labels = '''airplane, automobile, bird, cat, deer, 
@@ -226,12 +327,14 @@ misclassified_idx = np.where(p_test == y_test)[0]
 i = np.random.choice(misclassified_idx)
 plt.imshow(x_test[i], cmap='gray')
 plt.title("True label: %s Predicted: %s" % (labels[y_test[i]], labels[p_test[i]]))
+# Text(0.5, 1.0, 'True label: deer, Predicted: deer,')
 
 """Check the Wrong predictions"""
 misclassified_idx = np.where(p_test != y_test)[0]
 i = np.random.choice(misclassified_idx)
 plt.imshow(x_test[i], cmap='gray')
 plt.title("True label: %s Predicted: %s" % (labels[y_test[i]], labels[p_test[i]]))
+# Text(0.5, 1.0, 'True label: dog, Predicted: cat,')
 
 
 """**Retrain data with Augmentation** on Batch_Normalization Model"""
