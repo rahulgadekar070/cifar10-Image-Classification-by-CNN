@@ -273,3 +273,5 @@ plt.legend(loc = 'upper left')
 #3) by using Data Augmentation method on Batch Normalization model we got(epochs=10)
 #   Train_Accuracy = 88%           Test_Accuracy = 85.54%
 #   Train_Loss     = 0.3582        Test_Loss     = 0.4488
+  # from above results we can conclude that, Train Accuracy & Test Accuracy obtained by Data Augmentation method on Batch 
+  # Normalization model are closer so there is no overfiiting problem which is usually saw in CNN model.
